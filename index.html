@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, viewport-fit=cover">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>СУСЛОВ: ВЫЖИВАЧ</title>
+<style>
+  html, body {
+    margin: 0; padding: 0; width: 100%; height: 100%;
+    background: #1a1820; overflow: hidden;
+    font-family: system-ui, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  }
+  canvas {
+    display: block; width: 100%; height: 100%; cursor: default;
+    touch-action: none;              /* иначе страница будет скроллиться под пальцем */
+    -webkit-tap-highlight-color: transparent;
+    -webkit-user-select: none; user-select: none;
+  }
+  html, body { touch-action: none; overscroll-behavior: none; }
+
+  /* Поле ника: канвас текст не принимает, нужен настоящий input */
+  #ник {
+    position: absolute; left: 50%; transform: translateX(-50%);
+    display: none; z-index: 10;
+    width: 260px; padding: 11px 14px;
+    border-radius: 10px; text-align: center;
+    background: rgba(32, 30, 43, 0.9);
+    border: 1px solid rgba(220, 215, 235, 0.28);
+    color: #f2f0f6; outline: none;
+    font: 700 18px system-ui, "Segoe UI", Roboto, Arial, sans-serif;
+  }
+  #ник::placeholder { color: #7d7890; font-weight: 600; }
+  #ник:focus { border-color: #8fb6ff; background: rgba(44, 42, 60, 0.95); }
+  #fb {
+    position: absolute; left: 50%; transform: translateX(-50%);
+    display: none; z-index: 10;
+    padding: 9px 18px; border-radius: 10px;
+    background: rgba(32, 30, 43, 0.82);
+    border: 1px solid rgba(220, 215, 235, 0.22);
+    color: #cfc9dd; text-decoration: none;
+    font: 600 15px system-ui, "Segoe UI", Roboto, Arial, sans-serif;
+    white-space: nowrap;
+    transition: background 0.15s, color 0.15s, border-color 0.15s;
+  }
+  #fb:hover {
+    background: rgba(60, 79, 134, 0.9);
+    border-color: #8fb6ff;
+    color: #f2f0f6;
+  }
+</style>
+</head>
+<body>
+<canvas id="экран"></canvas>
+<!-- Обычный HTML поверх канваса: нарисованная в канвасе кнопка не кликабельна.
+     Показывается только на экранах ПОДРУБ и ИТОГИ, в бою скрыта, чтобы не ловила клики. -->
+<a id="fb" href="https://t.me/ichrir" target="_blank" rel="noopener noreferrer">Есть идея или нашёл баг → @ichrir</a>
+<input id="ник" maxlength="14" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="твой ник">
+
+<!-- Порядок важен: конфиги и тексты объявляют данные, engine создаёт канвас
+     и состояние, entities и ui только определяют функции и работают позже.
+     Обычные script src, без модулей — игра открывается двойным кликом. -->
+<script src="config.js"></script>
+<script src="text.js"></script>
+<script src="content.js"></script>
+<script src="sprites.js"></script>
+<script src="engine.js"></script>
+<script src="entities.js"></script>
+<script src="ui.js"></script>
+</body>
+</html>
