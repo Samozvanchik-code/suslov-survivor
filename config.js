@@ -83,11 +83,15 @@ const МАНИФЕСТ = {
   skin_zapoy:       { файл: 'sprites/skin_zapoy.png',       ш:  65, в: 192, необязательный: true },
   skin_tarakan:     { файл: 'sprites/skin_tarakan.png',     ш:  66, в: 192, необязательный: true },
   skin_lyuks:       { файл: 'sprites/skin_lyuks.png',       ш:  63, в: 192, необязательный: true },
-  /* Оружейные скины (blin, girya, beluga, cherep, doshik, myshka) ждут своих
-     PNG: в присланном архиве были только скины персонажа. Строки манифеста
-     появятся вместе с файлами — объявлять их заранее нельзя, игра ловила бы
-     404 на каждом запуске, а колесо выдавало бы невидимую гантелю. Все 64x64,
-     точка вращения — центр кадра. */
+  /* Оружейные скины. Все 64x64, точка вращения — центр кадра. Как и скины
+     персонажа, помечены необязательными: пока PNG не в репозитории, скин
+     просто числится «скоро» и в колесе не выпадает. */
+  weapon_blin:      { файл: 'sprites/weapon_blin.png',      ш:  64, в:  64, необязательный: true },
+  weapon_girya:     { файл: 'sprites/weapon_girya.png',     ш:  64, в:  64, необязательный: true },
+  weapon_beluga:    { файл: 'sprites/weapon_beluga.png',    ш:  64, в:  64, необязательный: true },
+  weapon_cherep:    { файл: 'sprites/weapon_cherep.png',    ш:  64, в:  64, необязательный: true },
+  weapon_doshik:    { файл: 'sprites/weapon_doshik.png',    ш:  64, в:  64, необязательный: true },
+  weapon_myshka:    { файл: 'sprites/weapon_myshka.png',    ш:  64, в:  64, необязательный: true },
   item_cherep:      { файл: 'sprites/item_cherep.png',      ш:  44, в:  64 },
   item_beluga:      { файл: 'sprites/item_beluga.png',      ш:  18, в:  72 },
   item_xp:          { файл: 'sprites/item_xp.png',          ш:  21, в:  32 },
@@ -664,13 +668,12 @@ const СКИНЫ = {
   ],
   оружие: [
     { ид: 'gantelya', спрайт: 'weapon_gantelya', имя: 'ГАНТЕЛЯ', редкость: 'базовый', база: true },
-    /* Ждут своих PNG — раскомментировать вместе со строками манифеста:
     { ид: 'blin',     спрайт: 'weapon_blin',     имя: 'БЛИН',    редкость: 'обычный' },
     { ид: 'girya',    спрайт: 'weapon_girya',    имя: 'ГИРЯ',    редкость: 'обычный' },
     { ид: 'doshik',   спрайт: 'weapon_doshik',   имя: 'ДОШИК',   редкость: 'обычный' },
     { ид: 'beluga',   спрайт: 'weapon_beluga',   имя: 'БУТЫЛКА', редкость: 'редкий' },
     { ид: 'cherep',   спрайт: 'weapon_cherep',   имя: 'ЧЕРЕП',   редкость: 'редкий' },
-    { ид: 'myshka',   спрайт: 'weapon_myshka',   имя: 'МЫШКА',   редкость: 'редкий' } */
+    { ид: 'myshka',   спрайт: 'weapon_myshka',   имя: 'МЫШКА',   редкость: 'редкий' }
   ]
 };
 

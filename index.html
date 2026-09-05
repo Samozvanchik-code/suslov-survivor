@@ -67,6 +67,44 @@
     transition: background 0.15s, color 0.15s, border-color 0.15s;
   }
   #fs:hover { background: rgba(60, 79, 134, 0.9); border-color: #8fb6ff; color: #f2f0f6; }
+
+  /* ЗВУК: кнопка-динамик и панель с ползунками.
+
+     Ползунки — настоящие <input type="range">, а не нарисованные на канвасе.
+     Причина та же, что у поля ника: тянуть пальцем нарисованный ползунок
+     пришлось бы реализовывать самому, включая попадание по нему на телефоне,
+     а нативный range это умеет из коробки и доступен с клавиатуры. */
+  #звук {
+    position: absolute; top: 12px; right: 62px;
+    display: none; z-index: 11;
+    width: 42px; height: 42px; padding: 0;
+    border-radius: 10px; cursor: pointer;
+    background: rgba(32, 30, 43, 0.82);
+    border: 1px solid rgba(220, 215, 235, 0.22);
+    color: #cfc9dd;
+    font: 700 18px system-ui, "Segoe UI", Roboto, Arial, sans-serif;
+    line-height: 40px; text-align: center;
+    transition: background 0.15s, color 0.15s, border-color 0.15s;
+  }
+  #звук:hover { background: rgba(60, 79, 134, 0.9); border-color: #8fb6ff; color: #f2f0f6; }
+  #звук.вбою { opacity: 0.45; width: 38px; height: 38px; line-height: 36px; font-size: 15px; right: 58px; }
+  #звук.вбою:hover { opacity: 1; }
+  #звукПанель {
+    position: absolute; top: 62px; right: 12px;
+    display: none; z-index: 12;
+    width: 214px; padding: 12px 14px 14px;
+    border-radius: 12px;
+    background: rgba(24, 22, 32, 0.96);
+    border: 1px solid rgba(220, 215, 235, 0.22);
+    color: #cfc9dd;
+    font: 700 13px system-ui, "Segoe UI", Roboto, Arial, sans-serif;
+  }
+  #звукПанель .строка { display: flex; justify-content: space-between; margin-bottom: 4px; }
+  #звукПанель .строка + input { margin-bottom: 12px; }
+  #звукПанель input[type="range"] {
+    width: 100%; margin: 0; accent-color: #6cff9a;
+    height: 26px;              /* палец должен попадать, а не целиться */
+  }
   /* В бою кнопка приглушена, чтобы не тянуть на себя внимание с боя,
      но остаётся нажимаемой и попадает под палец. */
   #fs.вбою { opacity: 0.45; width: 38px; height: 38px; line-height: 36px; font-size: 17px; }
@@ -145,6 +183,15 @@
 <!-- Полный экран. Скрыта по умолчанию: показывается только на экранах, где
      уместна, и только если браузер вообще умеет Fullscreen API. -->
 <button id="fs" type="button" title="На весь экран" aria-label="На весь экран">&#9974;</button>
+<!-- Громкость. Панель открывается кнопкой-динамиком и живёт на всех экранах,
+     включая бой: музыку чаще всего хотят убавить именно посреди забега. -->
+<button id="звук" type="button" title="Громкость" aria-label="Громкость">&#9834;</button>
+<div id="звукПанель">
+  <div class="строка"><span>МУЗЫКА</span><span id="музыкаЗначение">45%</span></div>
+  <input id="музыкаПолзунок" type="range" min="0" max="100" step="5" value="45" aria-label="Громкость музыки">
+  <div class="строка"><span>ЗВУКИ</span><span id="звукиЗначение">100%</span></div>
+  <input id="звукиПолзунок" type="range" min="0" max="100" step="5" value="100" aria-label="Громкость звуков">
+</div>
 
 <!-- Порядок важен: конфиги и тексты объявляют данные, engine создаёт канвас
      и состояние, entities и ui только определяют функции и работают позже.
