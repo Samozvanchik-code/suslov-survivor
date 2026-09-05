@@ -1,4 +1,7 @@
 "use strict";
+var SimulationConfig = (function () {
+function createConfig() {
+"use strict";
 
 /* ==========================================================================
    CONFIG.JS
@@ -35,41 +38,41 @@ const НОМЕР_МЕТРИКИ = 112295369;
 // --- Спрайты. Пути относительные: index.html лежит рядом с папкой sprites. ---
 const МАНИФЕСТ = {
   // герои и боссы
-  ilya_idle:        { файл: 'sprites/ilya_idle.png',        ш:  58, в: 192 },
-  shvarts:          { файл: 'sprites/shvarts.png',          ш:  75, в: 240 },
-  boss_tolpa:       { файл: 'sprites/boss_tolpa.png',       ш: 310, в: 320 },
+  ilya_idle:        { файл: 'sprites/ilya_idle.png', ш: 58, в: 192 },
+  shvarts:          { файл: 'sprites/shvarts.png', ш: 75, в: 240 },
+  boss_tolpa:       { файл: 'sprites/boss_tolpa.png', ш: 310, в: 320 },
   /* Размеры здесь — подсказка на время загрузки: после onload берутся
      НАСТОЯЩИЕ размеры файла (см. загрузитьСпрайты), и именно от них считаются
      габариты в мире. Поэтому файлы приведены к боевому размеру заранее, а не
      жмутся браузером каждый кадр. */
-  boss_delitel_papa:{ файл: 'sprites/boss_delitel_papa.png',ш: 328, в: 344 },
-  boss_dvoynik:     { файл: 'sprites/boss_dvoynik.png',     ш:  75, в: 250 },
+  boss_delitel_papa:{ файл: 'sprites/boss_delitel_papa.png', ш: 328, в: 344 },
+  boss_dvoynik:     { файл: 'sprites/boss_dvoynik.png', ш: 75, в: 250 },
   // аноны, у каждой вариации свой спрайт
-  anon:             { файл: 'sprites/anon.png',             ш:  75, в: 176 },
-  anon_zhirniy:     { файл: 'sprites/anon_zhirniy.png',     ш: 120, в: 176 },
-  anon_meloch:      { файл: 'sprites/anon_meloch.png',      ш:  60, в: 112 },
-  anon_drisch:      { файл: 'sprites/anon_drisch.png',      ш: 114, в: 200 },
-  anon_kaming:      { файл: 'sprites/anon_kaming.png',      ш:  78, в: 176 },
-  anon_delitel:     { файл: 'sprites/anon_delitel.png',     ш:  75, в: 176 },
-  anon_maska:       { файл: 'sprites/anon_maska.png',       ш:  90, в: 176 },
+  anon:             { файл: 'sprites/anon.png', ш: 75, в: 176 },
+  anon_zhirniy:     { файл: 'sprites/anon_zhirniy.png', ш: 120, в: 176 },
+  anon_meloch:      { файл: 'sprites/anon_meloch.png', ш: 60, в: 112 },
+  anon_drisch:      { файл: 'sprites/anon_drisch.png', ш: 114, в: 200 },
+  anon_kaming:      { файл: 'sprites/anon_kaming.png', ш: 78, в: 176 },
+  anon_delitel:     { файл: 'sprites/anon_delitel.png', ш: 75, в: 176 },
+  anon_maska:       { файл: 'sprites/anon_maska.png', ш: 90, в: 176 },
   // союзники, пацаны из Пензы
-  ally_leva2k:      { файл: 'sprites/ally_leva2k.png',      ш:  65, в: 184 },
-  ally_d1pro4:      { файл: 'sprites/ally_d1pro4.png',      ш:  95, в: 196 },
-  ally_jaguarn1:    { файл: 'sprites/ally_jaguarn1.png',    ш: 128, в: 180 },
+  ally_leva2k:      { файл: 'sprites/ally_leva2k.png', ш: 65, в: 184 },
+  ally_d1pro4:      { файл: 'sprites/ally_d1pro4.png', ш: 95, в: 196 },
+  ally_jaguarn1:    { файл: 'sprites/ally_jaguarn1.png', ш: 128, в: 180 },
   ally_bondarenk01: { файл: 'sprites/ally_bondarenk01.png', ш: 102, в: 180 },
-  ally_zzord:       { файл: 'sprites/ally_zzord.png',       ш: 100, в: 190 },
+  ally_zzord:       { файл: 'sprites/ally_zzord.png', ш: 100, в: 190 },
   // донатеры и Колобок
-  don_galiopola:    { файл: 'sprites/don_galiopola.png',    ш:  54, в: 186 },
-  don_nishebrodov:  { файл: 'sprites/don_nishebrodov.png',  ш:  74, в: 180 },
-  don_haunted:      { файл: 'sprites/don_haunted.png',      ш:  61, в: 182 },
-  don_aartll:       { файл: 'sprites/don_aartll.png',       ш:  54, в: 180 },
-  npc_kolobok:      { файл: 'sprites/npc_kolobok.png',      ш:  70, в: 150 },
+  don_galiopola:    { файл: 'sprites/don_galiopola.png', ш: 54, в: 186 },
+  don_nishebrodov:  { файл: 'sprites/don_nishebrodov.png', ш: 74, в: 180 },
+  don_haunted:      { файл: 'sprites/don_haunted.png', ш: 61, в: 182 },
+  don_aartll:       { файл: 'sprites/don_aartll.png', ш: 54, в: 180 },
+  npc_kolobok:      { файл: 'sprites/npc_kolobok.png', ш: 70, в: 150 },
   // спутники
-  pet_tarakan:      { файл: 'sprites/pet_tarakan.png',      ш:  65, в:  56 },
+  pet_tarakan:      { файл: 'sprites/pet_tarakan.png', ш: 65, в: 56 },
   pet_tarakanische: { файл: 'sprites/pet_tarakanische.png', ш: 169, в: 140 },
-  pet_schenok:      { файл: 'sprites/pet_schenok.png',      ш:  57, в:  72 },
+  pet_schenok:      { файл: 'sprites/pet_schenok.png', ш: 57, в: 72 },
   // предметы и объекты
-  weapon_gantelya:  { файл: 'sprites/weapon_gantelya.png',  ш:  52, в:  48 },
+  weapon_gantelya:  { файл: 'sprites/weapon_gantelya.png', ш: 52, в: 48 },
 
   /* СКИНЫ. Только внешность: хитбокс игрока берётся из ГЕРОЙ.хитбоксШ/В, а
      урон, откат и радиус оружия — из ГАНТЕЛЯ. Спрайт не участвует ни в одной
@@ -79,26 +82,26 @@ const МАНИФЕСТ = {
      Скины персонажа все высотой 192, как ilya_idle, но шире: шуба и панцирь
      объективно занимают больше места. Привязка идёт по низу и центру (так
      рисует drawSprite), поэтому при смене скина фигура не дёргается. */
-  skin_atlet:       { файл: 'sprites/skin_atlet.png',       ш:  59, в: 192, необязательный: true },
-  skin_zapoy:       { файл: 'sprites/skin_zapoy.png',       ш:  65, в: 192, необязательный: true },
-  skin_tarakan:     { файл: 'sprites/skin_tarakan.png',     ш:  66, в: 192, необязательный: true },
-  skin_lyuks:       { файл: 'sprites/skin_lyuks.png',       ш:  63, в: 192, необязательный: true },
+  skin_atlet:       { файл: 'sprites/skin_atlet.png', ш: 59, в: 192, необязательный: true },
+  skin_zapoy:       { файл: 'sprites/skin_zapoy.png', ш: 65, в: 192, необязательный: true },
+  skin_tarakan:     { файл: 'sprites/skin_tarakan.png', ш: 66, в: 192, необязательный: true },
+  skin_lyuks:       { файл: 'sprites/skin_lyuks.png', ш: 63, в: 192, необязательный: true },
   /* Оружейные скины. Все 64x64, точка вращения — центр кадра. Как и скины
      персонажа, помечены необязательными: пока PNG не в репозитории, скин
      просто числится «скоро» и в колесе не выпадает. */
-  weapon_blin:      { файл: 'sprites/weapon_blin.png',      ш:  64, в:  64, необязательный: true },
-  weapon_girya:     { файл: 'sprites/weapon_girya.png',     ш:  64, в:  64, необязательный: true },
-  weapon_beluga:    { файл: 'sprites/weapon_beluga.png',    ш:  64, в:  64, необязательный: true },
-  weapon_cherep:    { файл: 'sprites/weapon_cherep.png',    ш:  64, в:  64, необязательный: true },
-  weapon_doshik:    { файл: 'sprites/weapon_doshik.png',    ш:  64, в:  64, необязательный: true },
-  weapon_myshka:    { файл: 'sprites/weapon_myshka.png',    ш:  64, в:  64, необязательный: true },
-  item_cherep:      { файл: 'sprites/item_cherep.png',      ш:  44, в:  64 },
-  item_beluga:      { файл: 'sprites/item_beluga.png',      ш:  18, в:  72 },
-  item_xp:          { файл: 'sprites/item_xp.png',          ш:  21, в:  32 },
-  obj_kletka:       { файл: 'sprites/obj_kletka.png',       ш: 139, в: 150 },
+  weapon_blin:      { файл: 'sprites/weapon_blin.png', ш: 64, в: 64, необязательный: true },
+  weapon_girya:     { файл: 'sprites/weapon_girya.png', ш: 64, в: 64, необязательный: true },
+  weapon_beluga:    { файл: 'sprites/weapon_beluga.png', ш: 64, в: 64, необязательный: true },
+  weapon_cherep:    { файл: 'sprites/weapon_cherep.png', ш: 64, в: 64, необязательный: true },
+  weapon_doshik:    { файл: 'sprites/weapon_doshik.png', ш: 64, в: 64, необязательный: true },
+  weapon_myshka:    { файл: 'sprites/weapon_myshka.png', ш: 64, в: 64, необязательный: true },
+  item_cherep:      { файл: 'sprites/item_cherep.png', ш: 44, в: 64 },
+  item_beluga:      { файл: 'sprites/item_beluga.png', ш: 18, в: 72 },
+  item_xp:          { файл: 'sprites/item_xp.png', ш: 21, в: 32 },
+  obj_kletka:       { файл: 'sprites/obj_kletka.png', ш: 139, в: 150 },
 
   // текстура пола: кладётся тайлом, размер совпадает с ПЛИТКОЙ в ui.js
-  floor_tile:       { файл: 'sprites/floor_tile.png',       ш: 128, в: 128 },
+  floor_tile:       { файл: 'sprites/floor_tile.png', ш: 128, в: 128 },
 
   /* --- ИКОНКИ КАРТ. Ключ здесь обязан совпадать с полем «иконка» у карты
      в content.js — по нему нарисоватьИконку и ищет спрайт. Ключи кириллицей
@@ -107,26 +110,26 @@ const МАНИФЕСТ = {
 
      Пока иконки не было, карта рисовалась цветным кружком с первой буквой
      названия — то есть иконок в игре фактически не существовало. --- */
-  'крик':           { файл: 'sprites/icon_krik.png',        ш: 128, в: 128 },
-  'отчёт':          { файл: 'sprites/icon_otchet.png',      ш: 128, в: 128 },
-  'прайм':          { файл: 'sprites/icon_praim.png',       ш: 128, в: 128 },
-  'здраво':         { файл: 'sprites/icon_zdravo.png',      ш: 128, в: 128 },
-  'мышление':       { файл: 'sprites/icon_mishlenie.png',   ш: 128, в: 128 },
-  'щит':            { файл: 'sprites/icon_shit.png',        ш: 128, в: 128 },
-  'качок':          { файл: 'sprites/icon_kachok.png',      ш: 128, в: 128 },
-  'жир':            { файл: 'sprites/icon_zhir.png',        ш: 128, в: 128 },
-  'люкс':           { файл: 'sprites/icon_lyuks.png',       ш: 128, в: 128 },
-  'подруб':         { файл: 'sprites/icon_podrub.png',      ш: 128, в: 128 },
-  'ноги':           { файл: 'sprites/icon_nogi.png',        ш: 128, в: 128 },
-  'очки':           { файл: 'sprites/icon_ochki.png',       ш: 128, в: 128 },
-  'атлет':          { файл: 'sprites/icon_atlet.png',       ш: 128, в: 128 },
-  'причёска':       { файл: 'sprites/icon_prichoska.png',   ш: 128, в: 128 },
+  'крик':           { файл: 'sprites/icon_krik.png', ш: 128, в: 128 },
+  'отчёт':          { файл: 'sprites/icon_otchet.png', ш: 128, в: 128 },
+  'прайм':          { файл: 'sprites/icon_praim.png', ш: 128, в: 128 },
+  'здраво':         { файл: 'sprites/icon_zdravo.png', ш: 128, в: 128 },
+  'мышление':       { файл: 'sprites/icon_mishlenie.png', ш: 128, в: 128 },
+  'щит':            { файл: 'sprites/icon_shit.png', ш: 128, в: 128 },
+  'качок':          { файл: 'sprites/icon_kachok.png', ш: 128, в: 128 },
+  'жир':            { файл: 'sprites/icon_zhir.png', ш: 128, в: 128 },
+  'люкс':           { файл: 'sprites/icon_lyuks.png', ш: 128, в: 128 },
+  'подруб':         { файл: 'sprites/icon_podrub.png', ш: 128, в: 128 },
+  'ноги':           { файл: 'sprites/icon_nogi.png', ш: 128, в: 128 },
+  'очки':           { файл: 'sprites/icon_ochki.png', ш: 128, в: 128 },
+  'атлет':          { файл: 'sprites/icon_atlet.png', ш: 128, в: 128 },
+  'причёска':       { файл: 'sprites/icon_prichoska.png', ш: 128, в: 128 },
   // ветка резки: до этого одалживала чужие иконки, и в полоске билда
   // две разные карты рисовались одним значком
-  'измельчали':     { файл: 'sprites/icon_izmelchali.png',  ш: 128, в: 128 },
-  'доходяги':       { файл: 'sprites/icon_dohodyagi.png',   ш: 128, в: 128 },
-  'добивание':      { файл: 'sprites/icon_dobivanie.png',   ш: 128, в: 128 },
-  'слабое звено':   { файл: 'sprites/icon_slaboe_zveno.png',ш: 128, в: 128 }
+  'измельчали':     { файл: 'sprites/icon_izmelchali.png', ш: 128, в: 128 },
+  'доходяги':       { файл: 'sprites/icon_dohodyagi.png', ш: 128, в: 128 },
+  'добивание':      { файл: 'sprites/icon_dobivanie.png', ш: 128, в: 128 },
+  'слабое звено':   { файл: 'sprites/icon_slaboe_zveno.png', ш: 128, в: 128 }
 };
 
 /* --- ГОЛОСА СУСЛОВА. Нарезки из стримов, те самые, что цитирует чат.
@@ -831,3 +834,12 @@ const БАЛАНС = {
      под 30. Проверяется bench_levels.js. */
   порогУровня: (ур) => 10 + ур * 8 + Math.max(0, ур - 10) * 30
 };
+
+return { АДРЕС_РЕЙТИНГА, НОМЕР_МЕТРИКИ, МАНИФЕСТ, МАНИФЕСТ_ЗВУКОВ, ГОЛОС_КАРТЫ, МАСШТАБ_МИРА, ЦВЕТ, ГЕРОЙ, ГАНТЕЛЯ, КРИК, ОТЧЁТ, ПРАЙМ, ВРАГИ, ДРИЩ, КАМИНГ, ДЕЛИТЕЛЬ, МАСКА, ТЕЛЕГРАФ, СНАРЯД, БОССЫ, КУСОК, БРОСОК, РОДЫ, ДВОЙНИК_КОПИЯ, ФИНАЛ, НАГРАДА_БОССА, ЛУТ, БЕЛУГА, ЧЕРЕП, РЕДКОСТИ, ПОРЯДОК_РЕДКОСТЕЙ, СКИНЫ, КОЛЕСО, СТУПЕНИ, РЕЗКА, РОСТ, ВОЛНЫ, БАЛАНС };
+}
+return { createConfig };
+})();
+if (typeof module === "object" && module.exports) module.exports = SimulationConfig;
+// A single browser-owned config; the Node factory allocates a new one per world.
+const BROWSER_CONFIG = SimulationConfig.createConfig();
+const { АДРЕС_РЕЙТИНГА, НОМЕР_МЕТРИКИ, МАНИФЕСТ, МАНИФЕСТ_ЗВУКОВ, ГОЛОС_КАРТЫ, МАСШТАБ_МИРА, ЦВЕТ, ГЕРОЙ, ГАНТЕЛЯ, КРИК, ОТЧЁТ, ПРАЙМ, ВРАГИ, ДРИЩ, КАМИНГ, ДЕЛИТЕЛЬ, МАСКА, ТЕЛЕГРАФ, СНАРЯД, БОССЫ, КУСОК, БРОСОК, РОДЫ, ДВОЙНИК_КОПИЯ, ФИНАЛ, НАГРАДА_БОССА, ЛУТ, БЕЛУГА, ЧЕРЕП, РЕДКОСТИ, ПОРЯДОК_РЕДКОСТЕЙ, СКИНЫ, КОЛЕСО, СТУПЕНИ, РЕЗКА, РОСТ, ВОЛНЫ, БАЛАНС } = BROWSER_CONFIG;

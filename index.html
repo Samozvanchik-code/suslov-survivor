@@ -193,16 +193,16 @@
   <input id="звукиПолзунок" type="range" min="0" max="100" step="5" value="100" aria-label="Громкость звуков">
 </div>
 
-<!-- Порядок важен: конфиги и тексты объявляют данные, engine создаёт канвас
-     и состояние, entities и ui только определяют функции и работают позже.
+<!-- Порядок важен: config и simulation объявляют общее ядро, sprites — рендер,
+     engine создаёт браузерный адаптер; effects и ui завершают клиентский слой.
      Обычные script src, без модулей — игра открывается двойным кликом. -->
 <script src="config.js"></script>
 <script src="changelog.js"></script>
 <script src="text.js"></script>
-<script src="content.js"></script>
+<script src="simulation.js"></script>
 <script src="sprites.js"></script>
 <script src="engine.js"></script>
-<script src="entities.js"></script>
+<script src="effects.js"></script>
 <script src="ui.js"></script>
 </body>
 </html>
