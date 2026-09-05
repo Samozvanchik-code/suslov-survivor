@@ -45,6 +45,27 @@
     white-space: nowrap;
     transition: background 0.15s, color 0.15s, border-color 0.15s;
   }
+  /* Кнопка полного экрана.
+
+     Настоящий <button>, а не рисованная на канвасе. Причина техническая:
+     клики по канвасу обрабатываются в игровом цикле (обработатьКлик в кадре),
+     то есть уже НЕ внутри обработчика события мыши. Браузер разрешает
+     requestFullscreen только из пользовательского жеста, и из цикла вызов
+     молча отклоняется. Из обработчика click на HTML-кнопке — работает. */
+  #fs {
+    position: absolute; top: 12px; right: 12px;
+    display: none; z-index: 11;
+    width: 42px; height: 42px; padding: 0;
+    border-radius: 10px; cursor: pointer;
+    background: rgba(32, 30, 43, 0.82);
+    border: 1px solid rgba(220, 215, 235, 0.22);
+    color: #cfc9dd;
+    font: 700 20px system-ui, "Segoe UI", Roboto, Arial, sans-serif;
+    line-height: 40px; text-align: center;
+    transition: background 0.15s, color 0.15s, border-color 0.15s;
+  }
+  #fs:hover { background: rgba(60, 79, 134, 0.9); border-color: #8fb6ff; color: #f2f0f6; }
+
   #fb:hover {
     background: rgba(60, 79, 134, 0.9);
     border-color: #8fb6ff;
@@ -53,11 +74,16 @@
 </style>
 </head>
 <body>
-<canvas id="экран"></canvas>
+<!-- tabindex нужен, чтобы канвас мог получить фокус клавиатуры: внутри
+     iframe без фокуса стрелки скроллят родительскую страницу. -->
+<canvas id="экран" tabindex="0"></canvas>
 <!-- Обычный HTML поверх канваса: нарисованная в канвасе кнопка не кликабельна.
      Показывается только на экранах ПОДРУБ и ИТОГИ, в бою скрыта, чтобы не ловила клики. -->
 <a id="fb" href="https://t.me/ichrir" target="_blank" rel="noopener noreferrer">Есть идея или нашёл баг → @ichrir</a>
 <input id="ник" maxlength="14" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="твой ник">
+<!-- Полный экран. Скрыта по умолчанию: показывается только на экранах, где
+     уместна, и только если браузер вообще умеет Fullscreen API. -->
+<button id="fs" type="button" title="На весь экран" aria-label="На весь экран">&#9974;</button>
 
 <!-- Порядок важен: конфиги и тексты объявляют данные, engine создаёт канвас
      и состояние, entities и ui только определяют функции и работают позже.

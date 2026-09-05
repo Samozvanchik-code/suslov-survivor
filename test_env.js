@@ -25,16 +25,26 @@ function контекст() {
   };
 }
 
+/* Элемент с ЗАПОМИНАНИЕМ вызовов: тестам нужно проверять не только что
+   код не упал, но и что он позвал focus и повесил обработчик. */
 function элемент(тег) {
-  return {
+  const э = {
     tagName: тег, style: {}, dataset: {}, width: 800, height: 450,
     value: '', textContent: '',
+    _фокусов: 0, _слушатели: {},
     getContext: () => контекст(),
-    addEventListener(){}, removeEventListener(){}, appendChild(){},
-    focus(){}, blur(){}, setAttribute(){}, getAttribute(){ return null; },
+    addEventListener(имя, ф){ (э._слушатели[имя] = э._слушатели[имя] || []).push(ф); },
+    removeEventListener(){}, appendChild(){},
+    focus(){ э._фокусов++; }, blur(){},
+    setAttribute(){}, getAttribute(){ return null; },
     getBoundingClientRect: () => ({ left: 0, top: 0, width: 800, height: 450 }),
-    classList: { add(){}, remove(){}, toggle(){} }
+    classList: { add(){}, remove(){}, toggle(){} },
+    // ручная отправка события в элемент — так тест кликает по кнопке
+    _событие(имя, объект){
+      for (const ф of (э._слушатели[имя] || [])) ф(объект || { preventDefault(){}, stopPropagation(){} });
+    }
   };
+  return э;
 }
 
 function поднять(опции) {
@@ -42,7 +52,13 @@ function поднять(опции) {
   const окно = {
     innerWidth: 1280, innerHeight: 720, devicePixelRatio: 1,
     matchMedia: () => ({ matches: false, addEventListener(){}, addListener(){} }),
-    addEventListener(){}, removeEventListener(){},
+    _слушатели: {},
+    addEventListener(имя, ф){ (окно._слушатели[имя] = окно._слушатели[имя] || []).push(ф); },
+    removeEventListener(){},
+    // ручная отправка события в окно: так тест нажимает клавишу
+    _событие(имя, объект){
+      for (const ф of (окно._слушатели[имя] || [])) ф(объект);
+    },
     requestAnimationFrame: () => 0,
     location: { search: '', href: 'http://localhost/' },
     navigator: { userAgent: 'node', sendBeacon: () => true },
@@ -57,14 +73,43 @@ function поднять(опции) {
   };
   окно.localStorage = хранилище;
 
+  /* Встроенность игра определяет через window.self !== window.top.
+     Плюс собираем всё, что она шлёт наверх через postMessage: на iPhone это
+     единственный путь к полному экрану, и проверять надо именно его. */
+  окно.self = окно;
+  окно._сообщения = [];
+  if (опции.встроено) {
+    окно.top = { чужое: true };
+    окно.parent = { postMessage: (д) => окно._сообщения.push(д) };
+  } else {
+    окно.top = окно;
+    окно.parent = окно;
+  }
+
+  /* Элементы кэшируются по id: в браузере getElementById дважды отдаёт ОДИН
+     объект, и без кэша тест не может проверить, что игра поставила фокус
+     именно на канвас или спрятала именно кнопку полного экрана. */
+  const поId = {};
+  const корень = элемент('html');
+  if (!опции.безПолногоЭкрана) {
+    корень.requestFullscreen = () => { документ.fullscreenElement = корень; };
+  }
+
   const документ = {
     readyState: 'loading', scripts: [],
-    getElementById: () => элемент('canvas'),
+    fullscreenElement: null,
+    hasFocus: () => опции.фокус !== false,
+    getElementById: (id) => (поId[id] = поId[id] || элемент('canvas')),
     createElement: (t) => элемент(t),
     getElementsByTagName: () => [ элемент('script') ],
-    addEventListener(){}, removeEventListener(){},
-    body: элемент('body'), documentElement: элемент('html')
+    _слушатели: {},
+    addEventListener(имя, ф){ (документ._слушатели[имя] = документ._слушатели[имя] || []).push(ф); },
+    removeEventListener(){},
+    _событие(имя){ for (const ф of (документ._слушатели[имя] || [])) ф({}); },
+    body: элемент('body'), documentElement: корень
   };
+  документ.exitFullscreen = () => { документ.fullscreenElement = null; };
+  окно._элементы = поId;
 
   const песочница = {
     window: окно, document: документ,
@@ -129,10 +174,13 @@ function поднять(опции) {
     уронитьПредмет, выложитьЛут, точкаДляЛута,
     пересчитатьМаксHp, ранитьИгрока, боевойМножитель, уронВрагу, попалВТыл,
     пересчитатьЗум, пересчитатьРазмер, убитьВрага, обзорВокругИгрока,
-    сломатьЩит, создатьВрага2: создатьВрага
+    сломатьЩит, создатьВрага2: создатьВрага,
+    ВСТРОЕНО, полныйЭкранДоступен, вПолномЭкране, переключитьПолныйЭкран,
+    обновитьКнопкуФС, послеСменыЭкрана, вернутьФокус, фокусЕсть,
+    нуженПризывКликнуть, нарисоватьПризывКликнуть, отправитьСобытие
   };`, песочница, { filename: 'экспорт.js' });
 
-  return { песочница, S: песочница.__, ИГРА: песочница.__.ИГРА, vm };
+  return { песочница, S: песочница.__, ИГРА: песочница.__.ИГРА, vm, окно, документ };
 }
 
 module.exports = { поднять };
