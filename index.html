@@ -77,6 +77,41 @@
     border-color: #8fb6ff;
     color: #f2f0f6;
   }
+
+  /* Ссылки на сайт и твич Суслова.
+
+     Тоже настоящие <a>, а не рисованные на канвасе кнопки. Причина та же,
+     что у #fb и #fs: клик по канвасу обрабатывается в игровом цикле, уже вне
+     обработчика события, а браузеры (и особенно iOS в рамке на чужом сайте)
+     открывают новую вкладку только из пользовательского жеста. window.open
+     из кадра молча блокируется блокировщиком попапов.
+
+     Строка целиком центрируется флексом: раньше каждый оверлей позиционировал
+     себя сам через left:50% + translateX, и для двух кнопок рядом пришлось бы
+     считать половины ширин в JS — при разной длине подписей это разъезжается. */
+  #внешние {
+    position: absolute; left: 50%; transform: translateX(-50%);
+    display: none; z-index: 10;
+    gap: 10px; white-space: nowrap;
+  }
+  #внешние a {
+    padding: 9px 16px; border-radius: 10px;
+    background: rgba(32, 30, 43, 0.82);
+    border: 1px solid rgba(220, 215, 235, 0.22);
+    color: #cfc9dd; text-decoration: none;
+    font: 700 15px system-ui, "Segoe UI", Roboto, Arial, sans-serif;
+    transition: background 0.15s, color 0.15s, border-color 0.15s;
+  }
+  #внешние a:hover { background: rgba(60, 79, 134, 0.9); border-color: #8fb6ff; color: #f2f0f6; }
+  /* Твич узнают по цвету, а не по слову — поэтому у него свой акцент. */
+  #твич { border-color: rgba(169, 112, 255, 0.5) !important; color: #cbb0ff !important; }
+  #твич:hover { background: rgba(100, 65, 165, 0.9) !important; border-color: #a970ff !important; color: #fff !important; }
+  /* На телефоне подписи короче не сделать, поэтому жмём отступы: две кнопки
+     обязаны влезть в 390 px, иначе строка переносится и лезет на версию. */
+  @media (max-width: 460px) {
+    #внешние { gap: 8px; }
+    #внешние a { padding: 8px 11px; font-size: 13px; }
+  }
 </style>
 </head>
 <body>
@@ -86,6 +121,14 @@
 <!-- Обычный HTML поверх канваса: нарисованная в канвасе кнопка не кликабельна.
      Показывается только на экранах ПОДРУБ и ИТОГИ, в бою скрыта, чтобы не ловила клики. -->
 <a id="fb" href="https://t.me/ichrir" target="_blank" rel="noopener noreferrer">Есть идея или нашёл баг → @ichrir</a>
+<!-- Сайт и твич Суслова. Видны только в главном меню; в бою скрыты, иначе
+     ловили бы клики поверх канваса. target=_blank обязателен: игра стоит в
+     рамке на чужой странице, и переход в той же вкладке выкинул бы игрока
+     из игры вместе с сайтом-хозяином. -->
+<div id="внешние">
+  <a id="сайт" href="https://syslov171.com" target="_blank" rel="noopener noreferrer">САЙТ СУСЛОВА</a>
+  <a id="твич" href="https://twitch.tv/syslov171" target="_blank" rel="noopener noreferrer">ТВИЧ</a>
+</div>
 <input id="ник" maxlength="14" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="твой ник">
 <!-- Полный экран. Скрыта по умолчанию: показывается только на экранах, где
      уместна, и только если браузер вообще умеет Fullscreen API. -->
