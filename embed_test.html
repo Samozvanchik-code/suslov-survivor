@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Проверка встраивания — СУСЛОВ: ВЫЖИВАЧ</title>
+<!--
+  ЗАЧЕМ ЭТОТ ФАЙЛ
+
+  Это не часть игры. Это поддельный «чужой сайт» для проверки того, что
+  встроенная в рамку игра ведёт себя правильно. Всё, что связано со
+  встраиванием, headless-тестами до конца не проверяется: нужен настоящий
+  браузер, настоящий фокус и настоящий палец на телефоне.
+
+  КАК ПОЛЬЗОВАТЬСЯ
+
+  1. Положи файл рядом с index.html игры и открой его в браузере.
+  2. Пройди список ниже. Всё, что не сходится, — багрепорт.
+
+  ЧТО ПРОВЕРЯТЬ
+
+  A. Плашка «КЛИКНИ, ЧТОБЫ ИГРАТЬ»
+     Сразу после загрузки кликни СНАЧАЛА по этому тексту (не по игре) —
+     фокус уйдёт на страницу, и поверх игры должна появиться плашка.
+     Кликни по игре — плашка исчезает.
+
+  B. Стрелки не листают страницу
+     Кликни по игре, начни забег, зажми стрелку вверх. Страница под рамкой
+     НЕ должна прокручиваться. До клика по игре — прокручивается, это норма.
+
+  C. Полный экран
+     Кнопка в правом верхнем углу игры. Мир должен стать крупнее, а не
+     остаться в масштабе маленькой рамки. Повторное нажатие — назад.
+
+  D. iPhone
+     Fullscreen API там не работает, и игра это знает: вместо него она шлёт
+     наверх postMessage. Эта страница его принимает и растягивает рамку сама —
+     счётчик сообщений ниже должен расти при каждом нажатии кнопки.
+
+  ВАЖНО ДЛЯ НАСТОЯЩЕГО САЙТА: атрибут allow="fullscreen" на iframe
+  обязателен. Без него браузер блокирует полный экран внутри рамки, и
+  останется только путь через postMessage.
+-->
+<style>
+  body {
+    margin: 0; background: #15131b; color: #cfc9dd;
+    font: 15px/1.55 system-ui, "Segoe UI", Roboto, Arial, sans-serif;
+  }
+  header { padding: 14px 18px; }
+  code { background: #221f2c; padding: 1px 5px; border-radius: 4px; }
+  #рамка {
+    width: 900px; max-width: calc(100vw - 32px); height: 480px;
+    margin: 0 16px; border: 2px solid #3a3648; border-radius: 10px;
+    overflow: hidden;
+  }
+  #рамка.полный {
+    position: fixed; inset: 0; width: 100vw; height: 100vh;
+    margin: 0; border: 0; border-radius: 0; z-index: 99;
+  }
+  iframe { width: 100%; height: 100%; border: 0; display: block; }
+  #журнал {
+    margin: 14px 18px; padding: 10px 14px; border-radius: 8px;
+    background: #1c1a26; border: 1px solid #322e3f; white-space: pre-wrap;
+    font-family: ui-monospace, Consolas, monospace; font-size: 13px;
+  }
+  .низ { height: 1400px; padding: 18px; color: #8a8598; }
+</style>
+</head>
+<body>
+<header>
+  <b>Поддельный «чужой сайт»</b> — игра стоит в рамке 900×480.
+  Ниже нарочно длинная страница: по ней видно, листают ли её стрелки.
+  Список проверок — в комментарии внутри этого файла.
+</header>
+
+<div id="рамка">
+  <!-- allow="fullscreen" обязателен, иначе полный экран внутри рамки заблокирован -->
+  <iframe id="игра" src="index.html" allow="fullscreen"></iframe>
+</div>
+
+<div id="журнал">сообщений от игры: 0</div>
+
+<div class="низ">прокручиваемое содержимое чужого сайта…</div>
+
+<script>
+  /* Приём сообщений от игры. Это и есть путь для iPhone, где Fullscreen API
+     недоступен: игра просит, растягивает рамку сайт. */
+  var журнал = document.getElementById('журнал');
+  var рамка = document.getElementById('рамка');
+  var сообщений = 0;
+
+  window.addEventListener('message', function (e) {
+    var д = e.data;
+    if (!д || д.type !== 'suslov-fullscreen') return;
+    сообщений++;
+    рамка.classList.toggle('полный', !!д.on);
+    журнал.textContent = 'сообщений от игры: ' + сообщений +
+      '\nпоследнее: ' + JSON.stringify(д) +
+      '\nрамка ' + (д.on ? 'РАСТЯНУТА' : 'обычная');
+  });
+</script>
+</body>
+</html>
