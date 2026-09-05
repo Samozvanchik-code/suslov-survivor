@@ -94,7 +94,7 @@
     display: none; z-index: 10;
     gap: 10px; white-space: nowrap;
   }
-  #внешние a {
+  #внешние a, #внешние button {
     padding: 9px 16px; border-radius: 10px;
     background: rgba(32, 30, 43, 0.82);
     border: 1px solid rgba(220, 215, 235, 0.22);
@@ -102,7 +102,12 @@
     font: 700 15px system-ui, "Segoe UI", Roboto, Arial, sans-serif;
     transition: background 0.15s, color 0.15s, border-color 0.15s;
   }
-  #внешние a:hover { background: rgba(60, 79, 134, 0.9); border-color: #8fb6ff; color: #f2f0f6; }
+  #внешние a:hover, #внешние button:hover {
+    background: rgba(60, 79, 134, 0.9); border-color: #8fb6ff; color: #f2f0f6;
+  }
+  #внешние button { cursor: pointer; font-family: inherit; }
+  #топ { border-color: rgba(255, 204, 68, 0.45) !important; color: #ffd77a !important; }
+  #топ:hover { background: rgba(150, 110, 20, 0.85) !important; border-color: #ffcc44 !important; color: #fff !important; }
   /* Твич узнают по цвету, а не по слову — поэтому у него свой акцент. */
   #твич { border-color: rgba(169, 112, 255, 0.5) !important; color: #cbb0ff !important; }
   #твич:hover { background: rgba(100, 65, 165, 0.9) !important; border-color: #a970ff !important; color: #fff !important; }
@@ -110,7 +115,7 @@
      обязаны влезть в 390 px, иначе строка переносится и лезет на версию. */
   @media (max-width: 460px) {
     #внешние { gap: 8px; }
-    #внешние a { padding: 8px 11px; font-size: 13px; }
+    #внешние a, #внешние button { padding: 8px 11px; font-size: 13px; }
   }
 </style>
 </head>
@@ -126,6 +131,10 @@
      рамке на чужой странице, и переход в той же вкладке выкинул бы игрока
      из игры вместе с сайтом-хозяином. -->
 <div id="внешние">
+  <!-- ТОП В МИРЕ открывает внутренний экран игры, поэтому это button, а не
+       ссылка: канвасная кнопка потребовала бы места в колонке меню, которого
+       на телефоне нет. -->
+  <button id="топ" type="button">ТОП В МИРЕ</button>
   <a id="сайт" href="https://syslov171.com" target="_blank" rel="noopener noreferrer">САЙТ СУСЛОВА</a>
   <a id="твич" href="https://twitch.tv/syslov171" target="_blank" rel="noopener noreferrer">ТВИЧ</a>
 </div>
