@@ -139,6 +139,10 @@ function поднять(опции) {
     Image: function(){ this.onload = null; this.onerror = null; this.src = ''; },
     Uint8ClampedArray, Set, Map, isNaN, parseInt, parseFloat,
     Infinity, NaN, setTimeout, clearTimeout,
+    /* Игра пользуется интервалами (опрос списка комнат в онлайне), поэтому
+       песочница обязана их знать: без них тест падает там, где браузер
+       работает, и мы чиним несуществующую поломку. */
+    setInterval, clearInterval,
     fetch: опции.fetch || (() => Promise.resolve({ ok: true })),
     Promise, Blob: function(){}, navigator: окно.navigator
   };
