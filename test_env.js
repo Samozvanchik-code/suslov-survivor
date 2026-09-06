@@ -145,7 +145,10 @@ function поднять(опции) {
   песочница.globalThis = песочница;
   vm.createContext(песочница);
 
-  const файлы = ['config.js','changelog.js','text.js','simulation.js','sprites.js','engine.js','effects.js','ui.js'];
+  /* protocol.js и online.js грузятся вместе с остальными: экран онлайна живёт
+     в ui.js и обращается к объекту ОНЛАЙН, а тесты обязаны видеть игру в том
+     же составе файлов, в каком её видит браузер. */
+  const файлы = ['config.js','changelog.js','text.js','simulation.js','protocol.js','online.js','sprites.js','engine.js','effects.js','ui.js'];
   for (const ф of файлы) {
     let текст = fs.readFileSync(__dirname + '/' + ф, 'utf8');
     /* Адрес рейтинга объявлен через const, из теста его не переписать.
